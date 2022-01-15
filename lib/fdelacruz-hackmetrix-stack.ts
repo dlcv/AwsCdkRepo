@@ -68,6 +68,18 @@ export class FdelacruzHackmetrixStack extends Stack {
       encryption: s3.BucketEncryption.KMS,
       encryptionKey: myKmsKey,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      cors: [
+        {
+          allowedMethods: [
+            s3.HttpMethods.GET,
+            s3.HttpMethods.POST,
+            s3.HttpMethods.PUT,
+            s3.HttpMethods.HEAD,
+          ],
+          allowedOrigins: ['*'],
+          allowedHeaders: ['*'],
+        },
+      ],
     });
 
     assert(myBucket.encryptionKey === myKmsKey);
