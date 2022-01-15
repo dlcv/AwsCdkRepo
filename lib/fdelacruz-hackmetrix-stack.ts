@@ -11,7 +11,6 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigw from 'aws-cdk-lib/aws-apigateway';
 import * as codecommit from 'aws-cdk-lib/aws-codecommit';
 import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
-import { SnsDestination } from 'aws-cdk-lib/aws-s3-notifications';
 import { assert } from 'console';
 
 export class FdelacruzHackmetrixStack extends Stack {
@@ -57,7 +56,6 @@ export class FdelacruzHackmetrixStack extends Stack {
     // Define a API gateway for handle request
     new apigw.LambdaRestApi(this, baseName + 'API', {
       handler: myLambda
-      // handler: myLambdaCounter.handler
     });
 
     // Define a KMS for encryptation
@@ -75,7 +73,7 @@ export class FdelacruzHackmetrixStack extends Stack {
     assert(myBucket.encryptionKey === myKmsKey);
 
     // Allow lambda read and write in the S3 bucket
-    // myBucket.grantReadWrite(myLambda);
+    myBucket.grantReadWrite(myLambda);
 
     // Add repository for CDK code
     new codecommit.Repository(this, baseName + 'Repo', {
